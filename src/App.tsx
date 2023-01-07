@@ -1,21 +1,41 @@
-import React from 'react';
+import React, { FunctionComponent } from 'react';
 import logo from './logo.svg';
 import './App.css';
 
-type Theme = 'light' | 'dark';
+type CardProps = {
+  color: string;
+  isFlipped: boolean;
+};
 
-const Greeting = () => {
-  const name = 'Lauro';
-
-  return <p>Hello, {name}</p>;
+const Card: FunctionComponent<CardProps> = (props) => {
+  return (
+    <div className="card">
+      {props.isFlipped ? (
+        <div
+          className="w-100 h-100"
+          style={{ backgroundColor: props.color }}
+        />
+      ) : (
+        <img
+          src={logo}
+          alt="React logo"
+        />
+      )}
+    </div>
+  );
 };
 
 function App() {
-  const theme: Theme = 'light';
   return (
-    <div className={(theme as Theme) === 'dark' ? 'bg-dark' : 'bg-light'}>
-      <Greeting />
-      <Greeting />
+    <div className="row">
+      <Card
+        color="#f00"
+        isFlipped={true}
+      />
+      <Card
+        color="#0f0"
+        isFlipped={false}
+      />
     </div>
   );
 }
