@@ -2,23 +2,20 @@ import React from 'react';
 import logo from './logo.svg';
 import './App.css';
 
+type Theme = 'light' | 'dark';
+
+const Greeting = () => {
+  const name = 'Lauro';
+
+  return <p>Hello, {name}</p>;
+};
+
 function App() {
+  const theme: Theme = 'light';
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className={(theme as Theme) === 'dark' ? 'bg-dark' : 'bg-light'}>
+      <Greeting />
+      <Greeting />
     </div>
   );
 }
