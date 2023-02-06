@@ -4,11 +4,15 @@ import logo from './logo.svg';
 type CardProps = {
   color: string;
   isFlipped: boolean;
+  onFlip: () => void;
 };
 
 export const Card: FunctionComponent<CardProps> = (props) => {
   return (
-    <div className="card">
+    <div
+      className="card"
+      onClick={props.onFlip}
+    >
       {props.isFlipped ? (
         <div
           className="w-100 h-100"
