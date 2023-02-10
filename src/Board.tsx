@@ -49,18 +49,18 @@ class Board extends React.Component<BoardProps, BoardState> {
 
   render() {
     return (
-      <div className="row">
-        {this.state.cards.map((card, idx) => {
-          return (
-            <Card
-              key={idx}
-              color={card.color}
-              isFlipped={card.isFlipped}
-              onFlip={() => this.flipCard(idx)}
-            />
-          );
-        })}
-      </div>
+        <div className="row">
+          {this.state.cards.map((card, idx) => {
+            return (
+              <Card
+                key={idx}
+                color={card.color}
+                isFlipped={card.isFlipped}
+                onFlip={() => this.flipCard(idx)}
+              />
+            );
+          })}
+        </div>
     );
   }
 }
