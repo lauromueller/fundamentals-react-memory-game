@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Card } from './Card';
 
 type BoardCard = {
@@ -6,63 +6,47 @@ type BoardCard = {
   isFlipped: boolean;
 };
 
-type BoardProps = unknown;
-type BoardState = {
-  cards: BoardCard[];
-};
+const Board = () => {
+  const [cards, setCards] = useState<BoardCard[]>([
+    {
+      color: '#f00',
+      isFlipped: true,
+    },
+    {
+      color: '#0f0',
+      isFlipped: false,
+    },
+    {
+      color: '#00f',
+      isFlipped: false,
+    },
+  ]);
 
-class Board extends React.Component<BoardProps, BoardState> {
-  constructor(props: BoardProps) {
-    super(props);
-    this.state = {
-      cards: [
-        {
-          color: '#f00',
-          isFlipped: true,
-        },
-        {
-          color: '#0f0',
-          isFlipped: false,
-        },
-        {
-          color: '#00f',
-          isFlipped: false,
-        },
-      ],
-    };
-  }
-
-  flipCard = (cardIndex: number) => {
-    this.setState((prev) => {
-      return {
-        cards: [
-          ...prev.cards.slice(0, cardIndex),
-          {
-            isFlipped: !prev.cards[cardIndex].isFlipped,
-            color: prev.cards[cardIndex].color,
-          },
-          ...prev.cards.slice(cardIndex + 1, prev.cards.length),
-        ],
-      };
-    });
+  const flipCard = (cardIndex: number) => {
+    setCards([
+      ...cards.slice(0, cardIndex),
+      {
+        isFlipped: !cards[cardIndex].isFlipped,
+        color: cards[cardIndex].color,
+      },
+      ...cards.slice(cardIndex + 1, cards.length),
+    ]);
   };
 
-  render() {
-    return (
-        <div className="row">
-          {this.state.cards.map((card, idx) => {
-            return (
-              <Card
-                key={idx}
-                color={card.color}
-                isFlipped={card.isFlipped}
-                onFlip={() => this.flipCard(idx)}
-              />
-            );
-          })}
-        </div>
-    );
-  }
-}
+  return (
+    <div className="row">
+      {cards.map((card, idx) => {
+        return (
+          <Card
+            key={idx}
+            color={card.color}
+            isFlipped={card.isFlipped}
+            onFlip={() => flipCard(idx)}
+          />
+        );
+      })}
+    </div>
+  );
+};
 
 export { Board };
