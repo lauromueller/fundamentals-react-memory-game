@@ -1,3 +1,25 @@
+.header-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 3rem;
+  padding: 1rem;
+}
+
+.reset-button {
+  background-color: #2d68ff;
+  color: white;
+  font-weight: bold;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+}
+
+.reset-button:hover {
+  background-color: #4277ff;
+}
+
 .w-100 {
   width: 100%;
 }
