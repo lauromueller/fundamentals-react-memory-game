@@ -26,13 +26,19 @@ function shuffle<T>(array: T[]): T[] {
   return copy;
 }
 
+const initBoardCards = (cardColors: string[]): BoardCard[] => {
+  return shuffle([...cardColors, ...cardColors]).map((card) => ({
+    color: card,
+    isFlipped: false,
+  }));
+};
+
 const Board: FunctionComponent<BoardProps> = ({ initialCards }) => {
-  const [cards, setCards] = useState<BoardCard[]>(
-    shuffle([...initialCards, ...initialCards]).map((card) => ({
-      color: card,
-      isFlipped: false,
-    }))
-  );
+  const [cards, setCards] = useState<BoardCard[]>(initBoardCards(initialCards));
+
+  useEffect(() => {
+    setCards(initBoardCards(initialCards));
+  }, [initialCards]);
 
   useEffect(() => {
     const flippedCards = cards.filter((card) => card.isFlipped);
@@ -52,9 +58,6 @@ const Board: FunctionComponent<BoardProps> = ({ initialCards }) => {
           2000
         );
       }
-      // If cards[cardIndex].color === flippedCards[0].color -> Game won!
-      // Otherwise, we flip the second card and we set a timer of, say,
-      // 2 seconds to unflip the cards.
     }
   }, [cards]);
 
@@ -65,7 +68,7 @@ const Board: FunctionComponent<BoardProps> = ({ initialCards }) => {
       setCards([
         ...cards.slice(0, cardIndex),
         {
-          isFlipped: !cards[cardIndex].isFlipped,
+          isFlipped: true,
           color: cards[cardIndex].color,
         },
         ...cards.slice(cardIndex + 1, cards.length),

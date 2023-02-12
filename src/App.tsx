@@ -15,7 +15,13 @@ function App() {
   const [cards, setCards] = useState(generateRandomColorsArray(4));
   return (
     <>
-      <Header onRestartGame={() => console.log('Restart button clicked')} />
+      <Header
+        onRestartGame={() => {
+          if (window.confirm('Restart game?')) {
+            setCards(generateRandomColorsArray(4));
+          }
+        }}
+      />
       <Board initialCards={cards} />
     </>
   );
