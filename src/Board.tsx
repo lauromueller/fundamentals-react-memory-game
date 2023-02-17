@@ -1,5 +1,6 @@
 import React, { FunctionComponent, useEffect, useState } from 'react';
 import { Card } from './Card';
+import { useStatistics } from './Statistics';
 
 type BoardCard = {
   color: string;
@@ -35,7 +36,9 @@ const initBoardCards = (cardColors: string[]): BoardCard[] => {
 
 const Board: FunctionComponent<BoardProps> = ({ initialCards }) => {
   const [cards, setCards] = useState<BoardCard[]>(initBoardCards(initialCards));
+  const { incrementCardFlips, endGame, startNewGame } = useStatistics();
 
+  useEffect(() => startNewGame(), []);
   useEffect(() => {
     setCards(initBoardCards(initialCards));
   }, [initialCards]);
@@ -45,7 +48,10 @@ const Board: FunctionComponent<BoardProps> = ({ initialCards }) => {
 
     if (flippedCards.length === 2) {
       if (flippedCards[0].color === flippedCards[1].color) {
-        setTimeout(() => window.alert('You won!'), 50);
+        setTimeout(() => {
+          endGame();
+          window.alert('You won!');
+        }, 50);
       } else {
         setTimeout(
           () =>
@@ -73,6 +79,7 @@ const Board: FunctionComponent<BoardProps> = ({ initialCards }) => {
         },
         ...cards.slice(cardIndex + 1, cards.length),
       ]);
+      incrementCardFlips();
     }
   };
 

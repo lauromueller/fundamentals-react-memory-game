@@ -1,5 +1,6 @@
 import React, { FunctionComponent } from 'react';
 import logo from './logo.svg';
+import { useStatistics } from './Statistics';
 
 type CardProps = {
   color: string;
