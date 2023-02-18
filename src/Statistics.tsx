@@ -4,6 +4,7 @@ import {
   ReactNode,
   useContext,
   useState,
+  useCallback,
 } from 'react';
 import { v4 as uuidV4 } from 'uuid';
 
@@ -25,6 +26,11 @@ type Games = Record<string, GameStatistics>;
 type StatisticsProviderProps = {
   children: ReactNode;
 };
+
+const getOpenGameKey = (games: Games) =>
+  Object.entries(games)
+    .filter(([k, v]) => !v.endTime)
+    .map(([k]) => k)[0];
 
 const statisticsContext = createContext<StatisticsContextValue>({
   games: {},
@@ -50,68 +56,52 @@ export const StatisticsProvider: FunctionComponent<StatisticsProviderProps> = ({
 }) => {
   const [games, setGames] = useState<Games>({});
 
-  const startNewGame = () => {
-    const time = new Date();
+  const startNewGame = useCallback(() => {
+    setGames((games) => {
+      const time = new Date();
+      const openGame = getOpenGameKey(games);
 
-    const openGame = Object.entries(games)
-      .filter(([k, v]) => !v.endTime)
-      .map(([k]) => k)[0];
+      if (Boolean(openGame)) {
+        return games;
+      }
 
-    const gamesCopy = { ...games };
-
-    if (Boolean(openGame)) {
-      gamesCopy[openGame] = {
-        ...gamesCopy[openGame],
-        endTime: time,
+      return {
+        ...games,
+        [uuidV4()]: {
+          startTime: time,
+          numberOfCardFlips: 0,
+        },
       };
-    }
-
-    setGames({
-      ...gamesCopy,
-      [uuidV4()]: {
-        startTime: time,
-        numberOfCardFlips: 0,
-      },
     });
-  };
+  }, []);
 
-  const endGame = () => {
-    const openGame = Object.entries(games)
-      .filter(([k, v]) => !v.endTime)
-      .map(([k]) => k)[0];
+  const endGame = useCallback(() => {
+    setGames((games) => {
+      const openGame = getOpenGameKey(games);
 
-    const gamesCopy = { ...games };
-
-    if (Boolean(openGame)) {
-      gamesCopy[openGame] = {
-        ...gamesCopy[openGame],
-        endTime: new Date(),
-      };
-    }
-
-    setGames({
-      ...gamesCopy,
+      if (Boolean(openGame)) {
+        games[openGame] = {
+          ...games[openGame],
+          endTime: new Date(),
+        };
+      }
+      return { ...games };
     });
-  };
+  }, []);
 
-  const incrementCardFlips = () => {
-    const openGame = Object.entries(games)
-      .filter(([k, v]) => !v.endTime)
-      .map(([k]) => k)[0];
+  const incrementCardFlips = useCallback(() => {
+    setGames((games) => {
+      const openGame = getOpenGameKey(games);
 
-    const gamesCopy = { ...games };
-
-    if (Boolean(openGame)) {
-      gamesCopy[openGame] = {
-        ...gamesCopy[openGame],
-        numberOfCardFlips: gamesCopy[openGame].numberOfCardFlips + 1,
-      };
-    }
-
-    setGames({
-      ...gamesCopy,
+      if (Boolean(openGame)) {
+        games[openGame] = {
+          ...games[openGame],
+          numberOfCardFlips: games[openGame].numberOfCardFlips + 1,
+        };
+      }
+      return { ...games };
     });
-  };
+  }, []);
 
   return (
     <statisticsContext.Provider

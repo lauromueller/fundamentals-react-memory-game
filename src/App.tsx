@@ -24,6 +24,7 @@ function App() {
       <Header
         onRestartGame={() => {
           if (window.confirm('Restart game?')) {
+            endGame();
             startNewGame();
             setCards(generateRandomColorsArray(4));
           }

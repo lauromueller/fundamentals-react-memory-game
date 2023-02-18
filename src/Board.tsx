@@ -38,7 +38,7 @@ const Board: FunctionComponent<BoardProps> = ({ initialCards }) => {
   const [cards, setCards] = useState<BoardCard[]>(initBoardCards(initialCards));
   const { incrementCardFlips, endGame, startNewGame } = useStatistics();
 
-  useEffect(() => startNewGame(), []);
+  useEffect(() => startNewGame(), [startNewGame]);
   useEffect(() => {
     setCards(initBoardCards(initialCards));
   }, [initialCards]);
