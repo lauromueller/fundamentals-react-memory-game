@@ -65,7 +65,7 @@ const Board: FunctionComponent<BoardProps> = ({ initialCards }) => {
         );
       }
     }
-  }, [cards]);
+  }, [cards, endGame]);
 
   const flipCard = (cardIndex: number) => {
     const flippedCards = cards.filter((card) => card.isFlipped);

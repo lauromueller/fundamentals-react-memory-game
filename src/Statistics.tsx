@@ -118,5 +118,12 @@ export const StatisticsProvider: FunctionComponent<StatisticsProviderProps> = ({
 };
 
 export const Statistics = () => {
-  return <div>Statistics</div>;
+  const { statistics } = useStatistics();
+
+  return (
+    <div style={{ padding: '1rem' }}>
+      Completed games:
+      <pre>{JSON.stringify(statistics, null, 2)}</pre>
+    </div>
+  );
 };
